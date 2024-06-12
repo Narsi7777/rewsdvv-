@@ -2,14 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 module.exports = {
   entry: './src/index.jsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/'  // Ensures all routes are served from the root
   },
-  mode: 'development',
+  mode: isDevelopment ? 'development' : 'production',
   resolve: {
     extensions: ['.js', '.jsx']
   },
@@ -47,5 +49,8 @@ module.exports = {
       filename: 'index.html'
     })
   ],
-  devtool: 'inline-source-map'
+  devtool: isDevelopment ? 'inline-source-map' : 'source-map',
+  performance: {
+    hints: isDevelopment ? false : 'warning'
+  }
 };
